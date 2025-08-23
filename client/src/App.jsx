@@ -1,62 +1,100 @@
-export default function ReceiptExample() {
+import React, { useState } from "react";
+
+export default function POSBilling() {
+  const [items, setItems] = useState([]);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [qty, setQty] = useState(1);
+
+  const addItem = () => {
+    if (!name || !price) return;
+    const newItem = {
+      id: Date.now(),
+      name,
+      price: parseFloat(price),
+      qty: parseInt(qty),
+    };
+    setItems([...items, newItem]);
+    setName("");
+    setPrice("");
+    setQty(1);
+  };
+
+  const total = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+
   return (
-    <div className="p-6 max-w-sm mx-auto bg-white rounded-lg shadow-md border border-gray-200">
-      {/* Store Heading */}
-      <h1 className="text-2xl font-bold text-center mb-1">SuperMart POS</h1>
-      <p className="text-center text-sm text-gray-600 mb-4">Date: 19-08-2025 | Time: 12:45 PM</p>
+    <div className="min-h-screen bg-gray-100 p-8 font-roboto">
+      <h1 className="text-3xl font-bold mb-6 font-montserrat">POS Billing Software</h1>
 
-      {/* Receipt Title */}
-      <h3 className="text-lg font-semibold border-b pb-2 mb-4 text-gray-800 text-center">
-        Customer Receipt
-      </h3>
-
-      {/* Table */}
-      <table className="w-full text-sm mb-4">
-        <thead>
-          <tr className="border-b border-gray-300">
-            <th className="text-left py-2">Item</th>
-            <th className="text-center py-2">Qty</th>
-            <th className="text-right py-2">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="border-b border-dashed">
-            <td>Bread</td>
-            <td className="text-center">2</td>
-            <td className="text-right">₹40</td>
-          </tr>
-          <tr className="border-b border-dashed">
-            <td>Milk</td>
-            <td className="text-center">1</td>
-            <td className="text-right">₹25</td>
-          </tr>
-          <tr className="border-b border-dashed">
-            <td>Butter</td>
-            <td className="text-center">1</td>
-            <td className="text-right">₹55</td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* Totals */}
-      <div className="flex justify-between border-t border-gray-300 pt-2 text-sm font-semibold">
-        <span>Subtotal</span>
-        <span>₹120</span>
-      </div>
-      <div className="flex justify-between text-sm">
-        <span>Tax (5%)</span>
-        <span>₹6</span>
-      </div>
-      <div className="flex justify-between text-lg font-bold mt-2">
-        <span>Total</span>
-        <span>₹126</span>
+      {/* Add Item Form */}
+      <div className="bg-white p-4 rounded-xl shadow-md mb-6">
+        <h2 className="text-xl font-semibold mb-4 font-montserrat">Add Item</h2>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Item Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+          <input
+            type="number"
+            placeholder="Qty"
+            value={qty}
+            onChange={(e) => setQty(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+        </div>
+        <button
+          onClick={addItem}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Add to Bill
+        </button>
       </div>
 
-      {/* Footer */}
-      <p className="text-center text-xs text-gray-500 mt-6 border-t pt-3">
-        Thank you for shopping with us! <br />
-        Visit Again 🙏
-      </p>
+      {/* Bill Items */}
+      <div className="bg-white p-4 rounded-xl shadow-md">
+        <h2 className="text-xl font-semibold mb-4 font-montserrat">Bill</h2>
+        <table className="w-full border">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="p-2 border">Item</th>
+              <th className="p-2 border">Price</th>
+              <th className="p-2 border">Qty</th>
+              <th className="p-2 border">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="p-4 text-center">
+                  No items added
+                </td>
+              </tr>
+            ) : (
+              items.map((item) => (
+                <tr key={item.id}>
+                  <td className="p-2 border">{item.name}</td>
+                  <td className="p-2 border">₹{item.price}</td>
+                  <td className="p-2 border">{item.qty}</td>
+                  <td className="p-2 border">₹{item.price * item.qty}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+        <p className="text-right mt-4 text-lg font-semibold">
+          Grand Total: ₹{total}
+        </p>
+      </div>
     </div>
   );
 }
