@@ -23,4 +23,4 @@ router.put("/:id", updateStaff);
 // Delete staff by ID
 router.delete("/:id", deleteStaff);
 
-module.exports = router;
+export default router;
