@@ -23,4 +23,4 @@ router.put("/:id", updateAdmin);
 // Delete admin by ID
 router.delete("/:id", deleteAdmin);
 
-module.exports = router;
+export default router;
