@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router();
-import { addAdmin,getAdmins,getAdminById,updateAdmin,deleteAdmin } from "../controllers/adminController";
+import { addAdmin,getAdmins,getAdminById,updateAdmin,deleteAdmin } from "../controllers/adminController.js";
 
 // Create new admin
 router.post("/add", addAdmin);
