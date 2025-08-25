@@ -1,16 +1,16 @@
 import express from "express"
 const router = express.Router();
-import { addStaff,getStaffs,getStaffById,updateStaff,deleteStaff } from "../controllers/staffController.js";                 
+import { addStaff,getStaff,updateStaff,deleteStaff } from "../controllers/staffController.js";                 
 
 
 // Create new staff
 router.post("/add", addStaff);
 
 // Get all staff members
-router.get("/", getStaffs);
+router.get("/", getStaff);
 
 // Get single staff by ID
-router.get("/:id", getStaffById);
+// router.get("/:id", getStaffById);
 
 // Update staff by ID
 router.put("/:id", updateStaff);
