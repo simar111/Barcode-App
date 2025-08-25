@@ -1,12 +1,6 @@
 import express from "express"
 const router = express.Router();
-const {
-  addAdmin,
-  deleteAdmin,
-  updateAdmin,
-  getAdmins,
-  getAdminById
-} = require("../controllers/adminController");
+import { addAdmin,getAdmins,getAdminById,updateAdmin,deleteAdmin } from "../controllers/adminController";
 
 // Create new admin
 router.post("/add", addAdmin);
