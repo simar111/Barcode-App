@@ -1,7 +1,7 @@
-const Staff = require("../models/Staff");
+import Staff from "../models/Staff.js";
 
 // Add new staff
-exports.addStaff = async (req, res) => {
+export const addStaff = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -20,7 +20,7 @@ exports.addStaff = async (req, res) => {
 };
 
 // Get all staff
-exports.getStaff = async (req, res) => {
+export const getStaff = async (req, res) => {
   try {
     const staff = await Staff.find();
     res.json(staff);
@@ -30,7 +30,7 @@ exports.getStaff = async (req, res) => {
 };
 
 // Update staff
-exports.updateStaff = async (req, res) => {
+export const updateStaff = async (req, res) => {
   try {
     const { id } = req.params;
     const { email, password } = req.body;
@@ -52,7 +52,7 @@ exports.updateStaff = async (req, res) => {
 };
 
 // Delete staff
-exports.deleteStaff = async (req, res) => {
+export const deleteStaff = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedStaff = await Staff.findByIdAndDelete(id);
