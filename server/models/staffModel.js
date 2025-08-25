@@ -1,5 +1,4 @@
-// models/Staff.js
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const staffSchema = new mongoose.Schema(
   {
@@ -13,10 +12,11 @@ const staffSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Staff", staffSchema);
+const Staff = mongoose.model("Staff", staffSchema);
+
+export default Staff;
