@@ -1,7 +1,10 @@
 // controllers/authController.js
-const bcrypt = require("bcryptjs");
-const Admin = require("../models/Admin");
-const Staff = require("../models/Staff");
+import bcrypt from "bcryptjs";          
+
+import Admin from "../models/adminModel.js";                
+
+import Staff from "../models/staffModel.js";
+
 
 const login = async (req, res) => {
   try {
