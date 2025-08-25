@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import loginRoutes from "./routes/loginRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js";
+import staffRoutes from "./routes/staffRoutes.js";                          
+
 import cors from "cors";
 
 dotenv.config();
