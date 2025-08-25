@@ -1,12 +1,7 @@
 import express from "express"
 const router = express.Router();
-const {
-  addStaff,
-  deleteStaff,
-  updateStaff,
-  getStaffs,
-  getStaffById
-} = require("../controllers/staffController");
+import { addStaff,getStaffs,getStaffById,updateStaff,deleteStaff } from "../controllers/staffController";                 
+
 
 // Create new staff
 router.post("/add", addStaff);
