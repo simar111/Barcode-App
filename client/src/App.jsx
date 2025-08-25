@@ -1,5 +1,6 @@
 // TwoStepLogin.jsx
 import { useState } from "react";
+import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, ShoppingBag, ChevronDown } from "lucide-react";
 import logo from "./assets/dailycart-logo-main.png";
@@ -15,10 +16,21 @@ export default function TwoStepLogin() {
     if (email.trim() !== "") setStep(2);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-    alert("Login clicked!");
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email,
+        password,
+      });
+
+      console.log("Login Response:", res.data);
+      alert("Login successful ✅");
+      localStorage.setItem("token", res.data.token); // 👈 Save JWT for later
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Login failed ❌");
+    }
   };
 
   const stepVariants = {
