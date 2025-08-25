@@ -1,7 +1,8 @@
-const Admin = require("../models/Admin");
+// controllers/adminController.js
+import Admin from "../models/adminModel.js";
 
 // Add new admin
-exports.addAdmin = async (req, res) => {
+export const addAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -20,7 +21,7 @@ exports.addAdmin = async (req, res) => {
 };
 
 // Get all admins
-exports.getAdmins = async (req, res) => {
+export const getAdmins = async (req, res) => {
   try {
     const admins = await Admin.find();
     res.json(admins);
@@ -29,8 +30,24 @@ exports.getAdmins = async (req, res) => {
   }
 };
 
+// Get single admin by ID
+export const getAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const admin = await Admin.findById(id);
+
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    res.json(admin);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // Update admin
-exports.updateAdmin = async (req, res) => {
+export const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const { email, password } = req.body;
@@ -52,7 +69,7 @@ exports.updateAdmin = async (req, res) => {
 };
 
 // Delete admin
-exports.deleteAdmin = async (req, res) => {
+export const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedAdmin = await Admin.findByIdAndDelete(id);
