@@ -36,9 +36,9 @@ export default function TwoStepLogin() {
 
       // Navigate based on user role
       if (res.data.user.role === "staff") {
-        navigate("/staff-dashboard");
+        navigate("/staffdashboard");
       } else if (res.data.user.role === "admin") {
-        navigate("/admin-dashboard");
+        navigate("/admindashboard");
       }
     } catch (err) {
       console.error(err);
