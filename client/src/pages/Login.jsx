@@ -1,15 +1,17 @@
-// TwoStepLogin.jsx
 import { useState } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, ShoppingBag, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Add this import
 import logo from "../assets/dailycart-logo-main.png";
 
 export default function TwoStepLogin() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showForm, setShowForm] = useState(false); // 👈 New state for mobile
+  const [showForm, setShowForm] = useState(false);
+  const [errorPopup, setErrorPopup] = useState(""); // New state for error popup
+  const navigate = useNavigate(); // Initialize navigation hook
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -25,11 +27,24 @@ export default function TwoStepLogin() {
       });
 
       console.log("Login Response:", res.data);
-      alert("Login successful ✅");
-      localStorage.setItem("token", res.data.token); // 👈 Save JWT for later
+      
+      // Store user info and token in localStorage
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      // Navigate based on user role
+      if (res.data.user.role === "staff") {
+        navigate("/staff-dashboard");
+      } else if (res.data.user.role === "admin") {
+        navigate("/admin-dashboard");
+      }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Login failed ❌");
+      // Show popup error for invalid credentials
+      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      setErrorPopup(errorMessage);
     }
   };
 
@@ -255,7 +270,6 @@ export default function TwoStepLogin() {
 
                     {/* Login Button */}
                     <motion.button
-                    onClick={handleLogin}
                       whileTap={{ scale: 0.95 }}
                       whileHover={{
                         scale: 1.02,
@@ -284,6 +298,46 @@ export default function TwoStepLogin() {
               )}
             </AnimatePresence>
           </motion.div>
+        )}
+
+        {/* Error Popup Modal */}
+        {errorPopup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border"
+            >
+              <div className="text-center">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                  <svg
+                    className="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Login Failed
+                </h3>
+                <p className="text-gray-600 mb-6">{errorPopup}</p>
+                <button
+                  onClick={() => setErrorPopup("")}
+                  className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Try Again
+                </button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </div>
     </div>
