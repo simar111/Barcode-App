@@ -18,10 +18,10 @@ const App = () => {
         {/* <Route path="/signup" element={<Signup />} /> */}
 
         {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
 
         {/* Staff Routes */}
-        <Route path="/staff/dashboard" element={<StaffDashboard />} />
+        <Route path="/staffdashboard" element={<StaffDashboard />} />
 
         {/* Fallback Route */}
         {/* <Route path="*" element={<NotFound />} /> */}
