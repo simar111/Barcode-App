@@ -197,16 +197,16 @@ export default function Login() {
                   >
                     {/* Email Input */}
                     <motion.div variants={itemVariants}>
-                      <label className="block text-gray-600 text-sm sm:text-base font-medium mb-1">
+                      <label className="block text-gray-700 text-sm sm:text-base font-medium mb-1">
                         Enter your Email or Username
                       </label>
-                      <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2 bg-white focus-within:ring-2 focus-within:ring-green-400 transition">
+                      <div className="flex items-center px-3 py-2 sm:py-3 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-green-500 shadow-sm transition">
                         <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mr-2" />
                         <input
                           type="text"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full outline-none text-gray-700 text-sm sm:text-base lg:text-lg placeholder-gray-400"
+                          className="w-full outline-none text-gray-800 text-sm sm:text-base lg:text-lg placeholder-gray-400"
                           placeholder="example@dailycart.com"
                         />
                       </div>
@@ -217,14 +217,15 @@ export default function Login() {
                       whileTap={{ scale: 0.95 }}
                       whileHover={{
                         scale: 1.02,
-                        boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+                        boxShadow: "0px 6px 18px rgba(34,197,94,0.35)",
                       }}
                       variants={itemVariants}
                       type="submit"
-                      className="w-full py-2 sm:py-3 lg:py-3.5 rounded-lg font-medium text-white text-sm sm:text-base lg:text-lg bg-gradient-to-r from-green-500 to-orange-400 hover:from-green-600 hover:to-orange-500 transition-all"
+                      className="w-full py-2.5 sm:py-3 rounded-xl font-semibold text-white text-sm sm:text-base lg:text-lg bg-gradient-to-r from-green-500 to-orange-400 hover:from-green-600 hover:to-orange-500 shadow-md transition-all"
                     >
                       Continue →
                     </motion.button>
+
                   </motion.div>
                 </motion.form>
               )}
@@ -253,16 +254,16 @@ export default function Login() {
                           {email}
                         </span>
                       </p>
-                      <label className="block text-gray-600 text-sm sm:text-base font-medium mb-1">
+                      <label className="block text-gray-700 text-sm sm:text-base font-medium mb-1">
                         Enter your Password
                       </label>
-                      <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2 bg-white focus-within:ring-2 focus-within:ring-green-400 transition">
+                      <div className="flex items-center px-3 py-2 sm:py-3 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-green-500 shadow-sm transition">
                         <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mr-2" />
                         <input
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full outline-none text-gray-700 text-sm sm:text-base lg:text-lg placeholder-gray-400"
+                          className="w-full outline-none text-gray-800 text-sm sm:text-base lg:text-lg placeholder-gray-400"
                           placeholder="••••••••"
                         />
                       </div>
@@ -273,14 +274,15 @@ export default function Login() {
                       whileTap={{ scale: 0.95 }}
                       whileHover={{
                         scale: 1.02,
-                        boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+                        boxShadow: "0px 6px 18px rgba(34,197,94,0.35)",
                       }}
                       variants={itemVariants}
                       type="submit"
-                      className="w-full py-2 sm:py-3 lg:py-3.5 rounded-lg font-medium text-white text-sm sm:text-base lg:text-lg bg-gradient-to-r from-green-500 to-orange-400 hover:from-green-600 hover:to-orange-500 transition-all"
+                      className="w-full py-2.5 sm:py-3 rounded-xl font-semibold text-white text-sm sm:text-base lg:text-lg bg-gradient-to-r from-green-500 to-orange-400 hover:from-green-600 hover:to-orange-500 shadow-md transition-all"
                     >
-                      Login 
+                      Login
                     </motion.button>
+
                     {/* Back Button */}
                     <motion.button
                       whileTap={{ scale: 0.95 }}
@@ -302,8 +304,6 @@ export default function Login() {
                       </svg>
                       Back
                     </motion.button>
-
-
                   </motion.div>
                 </motion.form>
               )}
