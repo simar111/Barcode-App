@@ -5,7 +5,7 @@ import { Mail, Lock, ShoppingBag, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // Add this import
 import logo from "../assets/dailycart-logo-main.png";
 
-export default function TwoStepLogin() {
+export default function Login() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +27,7 @@ export default function TwoStepLogin() {
       });
 
       console.log("Login Response:", res.data);
-      
+
       // Store user info and token in localStorage
       localStorage.setItem("user", JSON.stringify(res.data.user));
       if (res.data.token) {
@@ -172,7 +172,7 @@ export default function TwoStepLogin() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative w-full max-w-[95%] sm:max-w-md lg:max-w-lg bg-white/90 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl border border-white/40 z-10"
+            className="relative w-full max-w-[95%] sm:max-w-md md:max-w-lg lg:max-w-xl bg-white/90 backdrop-blur-sm p-5 sm:p-7 md:p-8 lg:p-10 rounded-2xl shadow-2xl border border-white/40 z-10"
           >
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-gray-800 mb-5 font-sans tracking-tight">
               {step === 1 ? "Welcome to DailyCart 👋" : "Almost There 🚀"}
@@ -279,20 +279,31 @@ export default function TwoStepLogin() {
                       type="submit"
                       className="w-full py-2 sm:py-3 lg:py-3.5 rounded-lg font-medium text-white text-sm sm:text-base lg:text-lg bg-gradient-to-r from-green-500 to-orange-400 hover:from-green-600 hover:to-orange-500 transition-all"
                     >
-                      Login ✅
+                      Login 
                     </motion.button>
-
-                    {/* Back to Email */}
+                    {/* Back Button */}
                     <motion.button
                       whileTap={{ scale: 0.95 }}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.05 }}
                       variants={itemVariants}
                       type="button"
                       onClick={() => setStep(1)}
-                      className="w-full text-xs sm:text-sm lg:text-base text-green-600 hover:text-green-700 transition underline"
+                      className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-1 text-gray-600 hover:text-gray-900 text-xs sm:text-sm md:text-base font-medium transition-colors"
                     >
-                      Use a different account
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      </svg>
+                      Back
                     </motion.button>
+
+
                   </motion.div>
                 </motion.form>
               )}
