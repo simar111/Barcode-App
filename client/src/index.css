@@ -10,6 +10,7 @@ h1, h2, h3, h4, h5, h6 {
 p, a, li, span, td, th, button, textarea, input {
   font-family: 'Roboto', sans-serif;
 }
+
 @keyframes typing {
   from {
     width: 0;
@@ -31,4 +32,25 @@ p, a, li, span, td, th, button, textarea, input {
   white-space: nowrap;
   overflow: hidden;
   animation: typing 3s steps(30, end) forwards, blink 0.7s step-end infinite;
+}
+
+/* Auto-hide Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3b82f6;
+  border-radius: 9999px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: auto;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2563eb;
+}
+
+body:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
 }

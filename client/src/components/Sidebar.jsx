@@ -1,13 +1,29 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Users, Settings, X, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
+import {
+  Home,
+  Users,
+  Settings,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ShoppingCart,
+  DollarSign,
+  Box,
+  FileText,
+  AlertTriangle
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) {
+export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) {
   const location = useLocation();
 
   const menuItems = [
     { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard/admin" },
+    { name: "Sales", icon: <DollarSign size={20} />, path: "/dashboard/admin/sales" },
+    { name: "Products", icon: <Box size={20} />, path: "/dashboard/admin/products" },
+    { name: "Inventory Alerts", icon: <AlertTriangle size={20} />, path: "/dashboard/admin/inventory-alerts" },
     { name: "Users", icon: <Users size={20} />, path: "/dashboard/admin/users" },
+    { name: "Reports", icon: <FileText size={20} />, path: "/dashboard/admin/reports" },
     { name: "Settings", icon: <Settings size={20} />, path: "/dashboard/admin/settings" },
   ];
 
@@ -18,7 +34,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileOpen, set
     <>
       {/* Desktop Sidebar */}
       <motion.div
-        className={`hidden md:flex flex-col bg-gray-900 text-white shadow-lg`}
+        className="hidden md:flex flex-col bg-gray-900 text-white shadow-lg h-screen overflow-hidden"
         animate={{ width: isCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
       >
@@ -36,7 +52,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileOpen, set
                   transition={{ duration: 0.3 }}
                   className="text-xl font-bold tracking-wide"
                 >
-                  Daily Cart
+                  DailyCart
                 </motion.h1>
               )}
             </AnimatePresence>
@@ -58,7 +74,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileOpen, set
                 key={item.name}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`rounded-lg overflow-hidden`}
+                className="rounded-lg overflow-hidden"
               >
                 <Link
                   to={item.path}
@@ -114,7 +130,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileOpen, set
               <div className="flex items-center justify-between p-4 border-b border-gray-800">
                 <div className="flex items-center gap-2">
                   <ShoppingCart size={22} className="text-blue-400" />
-                  <h1 className="text-lg font-bold tracking-wide">Daily Cart</h1>
+                  <h1 className="text-lg font-bold tracking-wide">DailyCart</h1>
                 </div>
                 <button
                   onClick={() => setIsMobileOpen(false)}
