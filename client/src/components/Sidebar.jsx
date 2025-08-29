@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home,
@@ -18,17 +19,64 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen
   const location = useLocation();
 
   const menuItems = [
-    { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard/admin" },
-    { name: "Sales", icon: <DollarSign size={20} />, path: "/dashboard/admin/sales" },
-    { name: "Products", icon: <Box size={20} />, path: "/dashboard/admin/products" },
-    { name: "Inventory Alerts", icon: <AlertTriangle size={20} />, path: "/dashboard/admin/inventory-alerts" },
-    { name: "Users", icon: <Users size={20} />, path: "/dashboard/admin/users" },
-    { name: "Reports", icon: <FileText size={20} />, path: "/dashboard/admin/reports" },
-    { name: "Settings", icon: <Settings size={20} />, path: "/dashboard/admin/settings" },
+    { name: "Dashboard", icon: <Home size={20} className="text-blue-500" />, path: "/dashboard/admin" },
+    { name: "Sales", icon: <DollarSign size={20} className="text-green-500" />, path: "/dashboard/admin/sales" },
+    { name: "Products", icon: <Box size={20} className="text-orange-500" />, path: "/dashboard/admin/products" },
+    { name: "Inventory Alerts", icon: <AlertTriangle size={20} className="text-red-500" />, path: "/dashboard/admin/inventory-alerts" },
+
+    // Users & Staff
+    { name: "Users", icon: <Users size={20} className="text-purple-500" />, path: "/dashboard/admin/users" },
+    { name: "Staff", icon: <Users size={20} className="text-pink-500" />, path: "/dashboard/admin/staff" },
+
+    // Reports & Settings
+    { name: "Reports", icon: <FileText size={20} className="text-teal-500" />, path: "/dashboard/admin/reports" },
+    { name: "Settings", icon: <Settings size={20} className="text-gray-400" />, path: "/dashboard/admin/settings" },
   ];
 
   const activeClass = "bg-blue-600 text-white shadow-md";
   const inactiveClass = "text-gray-300 hover:bg-gray-800 hover:text-white";
+
+  const renderMenu = (isMobile = false) => (
+    menuItems.map((item) => {
+      const isActive = location.pathname === item.path;
+      return (
+        <React.Fragment key={item.name}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="rounded-lg overflow-hidden"
+          >
+            <Link
+              to={item.path}
+              onClick={isMobile ? () => setIsMobileOpen(false) : undefined}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200
+                ${isActive ? activeClass : inactiveClass}`}
+            >
+              {React.cloneElement(item.icon, {
+                className: isActive ? "text-white" : item.icon.props.className,
+              })}
+              {!isCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="font-medium"
+                >
+                  {item.name}
+                </motion.span>
+              )}
+            </Link>
+          </motion.div>
+
+          {/* Separator after Inventory Alerts */}
+          {item.name === "Inventory Alerts" && (
+            <div className="border-t border-gray-700 my-2" />
+          )}
+        </React.Fragment>
+      );
+    })
+  );
 
   return (
     <>
@@ -67,39 +115,7 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen
 
         {/* Menu */}
         <nav className="flex-1 p-3 space-y-2">
-          {menuItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <motion.div
-                key={item.name}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="rounded-lg overflow-hidden"
-              >
-                <Link
-                  to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200
-                    ${isActive ? activeClass : inactiveClass}`}
-                >
-                  {item.icon}
-                  <AnimatePresence>
-                    {!isCollapsed && (
-                      <motion.span
-                        key="text"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="font-medium"
-                      >
-                        {item.name}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </Link>
-              </motion.div>
-            );
-          })}
+          {renderMenu(false)}
         </nav>
       </motion.div>
 
@@ -142,27 +158,7 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen
 
               {/* Menu */}
               <nav className="flex-1 p-3 space-y-2">
-                {menuItems.map((item) => {
-                  const isActive = location.pathname === item.path;
-                  return (
-                    <motion.div
-                      key={item.name}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="rounded-lg overflow-hidden"
-                    >
-                      <Link
-                        to={item.path}
-                        onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200
-                          ${isActive ? activeClass : inactiveClass}`}
-                      >
-                        {item.icon}
-                        <span className="font-medium">{item.name}</span>
-                      </Link>
-                    </motion.div>
-                  );
-                })}
+                {renderMenu(true)}
               </nav>
             </motion.div>
           </motion.div>

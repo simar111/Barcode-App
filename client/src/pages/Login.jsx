@@ -21,29 +21,27 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://pos-app-backend-61sv.onrender.com/api/login", {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
 
       console.log("Login Response:", res.data);
 
-      // Store user info and token in localStorage
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
+      // Save token + role in localStorage
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
 
-      // Navigate based on user role
-      if (res.data.user.role === "staff") {
-        navigate("/dashboard/staff");
-      } else if (res.data.user.role === "admin") {
+      // Navigate based on role
+      if (res.data.role === "admin") {
         navigate("/dashboard/admin");
+      } else {
+        navigate("/dashboard/staff");
       }
     } catch (err) {
       console.error(err);
-      // Show popup error for invalid credentials
-      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      const errorMessage =
+        err.response?.data?.message || "Login failed. Please try again.";
       setErrorPopup(errorMessage);
     }
   };

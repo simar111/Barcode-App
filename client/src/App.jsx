@@ -3,15 +3,18 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
 import AdminDashboard from "./pages/AdminDashboard";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import StaffPage from "./pages/StaffPage";
+import StaffDashboard from "./pages/StaffDashboard"; // ✅ Staff Dashboard
 
 export default function App() {
-  const [isCollapsed, setIsCollapsed] = useState(false);   // desktop collapse
+  const [isCollapsed, setIsCollapsed] = useState(false); // desktop collapse
   const [isMobileOpen, setIsMobileOpen] = useState(false); // mobile drawer
 
   return (
@@ -41,9 +44,49 @@ export default function App() {
                 {/* Page Content */}
                 <main className="flex-1 p-6 overflow-y-auto bg-gray-100">
                   <Routes>
-                    <Route path="admin" element={<AdminDashboard />} />
-                    <Route path="admin/users" element={<Users />} />
-                    <Route path="admin/settings" element={<Settings />} />
+                    {/* 🟢 Admin Routes */}
+                    <Route
+                      path="admin"
+                      element={
+                        <ProtectedRoute role="admin">
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="admin/users"
+                      element={
+                        <ProtectedRoute role="admin">
+                          <Users />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="admin/staff"
+                      element={
+                        <ProtectedRoute role="admin">
+                          <StaffPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="admin/settings"
+                      element={
+                        <ProtectedRoute role="admin">
+                          <Settings />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    {/* 🔵 Staff Routes */}
+                    <Route
+                      path="staff"
+                      element={
+                        <ProtectedRoute role="cashier">
+                          <StaffDashboard />
+                        </ProtectedRoute>
+                      }
+                    />
                   </Routes>
                 </main>
               </div>
