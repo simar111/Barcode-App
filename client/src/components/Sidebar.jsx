@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Users,
@@ -11,12 +11,19 @@ import {
   DollarSign,
   Box,
   FileText,
-  AlertTriangle
+  AlertTriangle,
+  LogOut
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear(); // token, role, name sab hatao
+    navigate("/"); // login page pe bhejo
+  };
 
   const menuItems = [
     { name: "Dashboard", icon: <Home size={20} className="text-blue-500" />, path: "/dashboard/admin" },
@@ -117,6 +124,19 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen
         <nav className="flex-1 p-3 space-y-2">
           {renderMenu(false)}
         </nav>
+
+        {/* Logout Button */}
+        <div className="p-3 border-t border-gray-800">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition text-white"
+          >
+            <LogOut size={20} />
+            {!isCollapsed && <span className="font-medium">Logout</span>}
+          </motion.button>
+        </div>
       </motion.div>
 
       {/* Mobile Sidebar */}
@@ -160,6 +180,19 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed, isMobileOpen
               <nav className="flex-1 p-3 space-y-2">
                 {renderMenu(true)}
               </nav>
+
+              {/* Logout Button Mobile */}
+              <div className="p-3 border-t border-gray-800">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition text-white"
+                >
+                  <LogOut size={20} />
+                  <span className="font-medium">Logout</span>
+                </motion.button>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -82,7 +82,7 @@ export default function App() {
                     <Route
                       path="staff"
                       element={
-                        <ProtectedRoute role="cashier">
+                        <ProtectedRoute role="staff">
                           <StaffDashboard />
                         </ProtectedRoute>
                       }

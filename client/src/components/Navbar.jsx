@@ -2,6 +2,8 @@ import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Navbar({ setIsMobileOpen }) {
+  const userName = localStorage.getItem("name") || "User";
+
   return (
     <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
       
@@ -27,7 +29,7 @@ export default function Navbar({ setIsMobileOpen }) {
       {/* Right Section */}
       <div className="flex items-center gap-3 md:gap-4">
         <span className="hidden sm:inline text-gray-600 text-xs sm:text-sm md:text-base truncate max-w-[100px] md:max-w-[150px]">
-          Welcome, User
+          Welcome, {userName}
         </span>
 
         {/* Avatar */}
@@ -35,7 +37,7 @@ export default function Navbar({ setIsMobileOpen }) {
           whileHover={{ scale: 1.1, boxShadow: "0px 0px 8px rgba(59,130,246,0.5)" }}
           className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs sm:text-sm md:text-sm font-semibold shadow-md"
         >
-          U
+          {userName.charAt(0).toUpperCase()}
         </motion.div>
       </div>
     </header>
