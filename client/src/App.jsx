@@ -7,11 +7,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
 import AdminDashboard from "./pages/AdminDashboard";
-import Users from "./pages/Users";
+import ManageStaff from "./pages/ManageStaff";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import StaffPage from "./pages/StaffPage";
 import StaffDashboard from "./pages/StaffDashboard"; // ✅ Staff Dashboard
+import ManageProducts from "./pages/ManageProducts";
 
 export default function App() {
   const [isCollapsed, setIsCollapsed] = useState(false); // desktop collapse
@@ -54,18 +55,26 @@ export default function App() {
                       }
                     />
                     <Route
-                      path="admin/users"
+                      path="admin/staff/manage"
                       element={
                         <ProtectedRoute role="admin">
-                          <Users />
+                          <ManageStaff />
                         </ProtectedRoute>
                       }
                     />
                     <Route
-                      path="admin/staff"
+                      path="admin/staff/add"
                       element={
                         <ProtectedRoute role="admin">
                           <StaffPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="admin/products/manage"
+                      element={
+                        <ProtectedRoute role="admin">
+                          <ManageProducts />
                         </ProtectedRoute>
                       }
                     />

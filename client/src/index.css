@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 /* Headings */
@@ -8,7 +8,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Body text */
 p, a, li, span, td, th, button, textarea, input {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', 'Inter', sans-serif;
 }
 
 @keyframes typing {

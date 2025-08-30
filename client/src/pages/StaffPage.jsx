@@ -1,111 +1,186 @@
-import { useEffect, useState } from "react";
+// page/StaffPage.jsx
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Mail, Lock, User } from "lucide-react";
 import axios from "axios";
 
-export default function Users() {
-  const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("all");
+export default function StaffPage({ isSidebarCollapsed = false }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("staff");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setError("");
+      setMessage("");
+
+      const res = await axios.post("http://localhost:5000/api/user/register", {
+        name,
+        email,
+        password,
+        role,
+      });
+
+      setMessage(res.data.message || "User registered successfully!");
+      setName("");
+      setEmail("");
+      setPassword("");
+      setRole("staff");
+    } catch (err) {
+      setError(err.response?.data?.message || "Error registering user");
+    }
+  };
+
+  // Message auto hide
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/api/user"); // ✅ backend se fetch
-        setUsers(data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  // 🔍 Filtered Users
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+    if (!message && !error) return;
+    const timer = setTimeout(() => {
+      setMessage("");
+      setError("");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [message, error]);
 
   return (
-    <div className="p-4 sm:p-6">
-      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-center sm:text-left">
-        👥 Users
+    <motion.div
+      initial={{ opacity: 0, y: 20, width: "100%" }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        width: isSidebarCollapsed ? "100%" : "90%",
+      }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl max-w-full sm:max-w-3xl md:max-w-4xl"
+    >
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        Add New User
       </h2>
-      <p className="mb-4 sm:mb-6 text-gray-600 text-center sm:text-left text-sm sm:text-base">
-        Manage staff and admins here.
-      </p>
 
-      {/* 🔍 Search + Filter Controls */}
-      <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-3 mb-6">
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-
-        {/* Role Filter */}
-        <select
-          value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
-          className="w-full sm:w-40 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+      {/* Success & Error Messages */}
+      {message && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-4 text-sm text-green-600 text-center font-medium"
         >
-          <option value="all">All Roles</option>
-          <option value="admin">Admin</option>
-          <option value="staff">Staff</option>
-        </select>
-      </div>
+          {message}
+        </motion.p>
+      )}
+      {error && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-4 text-sm text-red-600 text-center font-medium"
+        >
+          {error}
+        </motion.p>
+      )}
 
-      {/* Card Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
-            <div
-              key={user._id}
-              className="bg-white shadow-md rounded-xl p-5 flex items-center justify-between border hover:shadow-lg hover:scale-[1.02] transition-all"
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+      >
+        {/* Name Input */}
+        <motion.div whileHover={{ scale: 1.02 }} className="flex flex-col">
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Name
+          </label>
+          <div className="flex items-center px-3 py-2 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-400 shadow-sm transition">
+            <User className="w-4 h-4 text-gray-400 mr-2" />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Enter name"
+              className="w-full outline-none text-gray-800 text-sm placeholder-gray-400"
+            />
+          </div>
+        </motion.div>
+
+        {/* Email Input */}
+        <motion.div whileHover={{ scale: 1.02 }} className="flex flex-col">
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Email
+          </label>
+          <div className="flex items-center px-3 py-2 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-400 shadow-sm transition">
+            <Mail className="w-4 h-4 text-gray-400 mr-2" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="example@dailycart.com"
+              className="w-full outline-none text-gray-800 text-sm placeholder-gray-400"
+            />
+          </div>
+        </motion.div>
+
+        {/* Password Input */}
+        <motion.div whileHover={{ scale: 1.02 }} className="flex flex-col">
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Password
+          </label>
+          <div className="flex items-center px-3 py-2 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-400 shadow-sm transition">
+            <Lock className="w-4 h-4 text-gray-400 mr-2" />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+              className="w-full outline-none text-gray-800 text-sm placeholder-gray-400"
+            />
+          </div>
+        </motion.div>
+
+        {/* Role Select */}
+        <motion.div whileHover={{ scale: 1.02 }} className="flex flex-col">
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Role
+          </label>
+          <div className="relative flex items-center px-3 py-2 border border-gray-300 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-400 shadow-sm transition">
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full outline-none text-gray-800 text-sm appearance-none bg-white pr-8 py-1 cursor-pointer"
             >
-              {/* Avatar + Info */}
-              <div className="flex items-center gap-3 overflow-hidden">
-                <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0 ${
-                    user.role === "admin"
-                      ? "bg-purple-600"
-                      : "bg-green-600"
-                  }`}
-                >
-                  {user.role === "admin" ? "A" : "S"}
-                </div>
-                <div className="truncate">
-                  <h3 className="font-semibold text-base md:text-lg truncate">
-                    {user.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 truncate">
-                    {user.email}
-                  </p>
-                </div>
-              </div>
+              <option value="staff">staff</option>
+              <option value="admin">Admin</option>
+            </select>
+            <svg
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </motion.div>
 
-              {/* Role Badge */}
-              <span
-                className={`ml-2 px-3 py-1 rounded-full text-xs font-medium capitalize flex-shrink-0 ${
-                  user.role === "admin"
-                    ? "bg-purple-100 text-purple-700"
-                    : "bg-green-100 text-green-700"
-                }`}
-              >
-                {user.role}
-              </span>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 col-span-full">
-            No users found
-          </p>
-        )}
-      </div>
-    </div>
+        {/* Submit Button */}
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="sm:col-span-2 lg:col-span-3"
+        >
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-orange-400 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Add User
+          </button>
+        </motion.div>
+      </motion.form>
+    </motion.div>
   );
 }
